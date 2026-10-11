@@ -1,6 +1,8 @@
 package main
+
 import (
 	"fmt"
+	"log"
 	"os"
 )
 func main() {
@@ -15,6 +17,10 @@ func main() {
 			return
 		}
 		projectName := os.Args[2]
+		err := os.Mkdir(projectName,0755)
+		if err != nil{
+			log.Fatal(err)
+		}
 		fmt.Printf("Project %s created successfully.", projectName)
 	} else {
 
