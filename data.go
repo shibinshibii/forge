@@ -1,4 +1,3 @@
-
 package main
 
 type File struct {
