@@ -1,0 +1,32 @@
+name: Go CI
+
+# Triggers the workflow on push or pull request to the main branch
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository code onto the runner
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Set up the Go environment
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
+      # 3. Run tests
+      - name: Run tests
+        run: go test -v ./...
+
+      # 4. Build application to ensure it compiles cleanly
+      - name: Build project
+        run: go build -v ./...
