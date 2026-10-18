@@ -1,18 +1,12 @@
+
 package main
 
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 )
-
-type File struct {
-	Name   string
-	Folder string
-	Data   []byte
-}
 
 func dirExists(path string) bool {
 	info, err := os.Stat(path)
@@ -24,41 +18,67 @@ func dirExists(path string) bool {
 	}
 	return false
 }
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Please provide command.")
 		return
 	}
+
 	command := os.Args[1]
-	if command == "create" {
-		if len(os.Args) < 3 {
-			fmt.Println("Please provide project name after create.")
-			return
-		}
-		projectName := os.Args[2]
-		if dirExists(projectName) {
-			fmt.Printf("The directory %s already exists", projectName)
 
-		} else {
-			for _, value := range dirs {
-				path := filepath.Join(projectName, value)
-				if err := os.MkdirAll(path, 0755); err != nil {
-					log.Fatal("Something gone wrong", err)
-				}
-			}
-			for _, value := range files {
-				filePath := filepath.Join(projectName, value.Folder, value.Name)
-				data := value.Data
-				err := os.WriteFile(filePath, data, 0644)
-				if err != nil {
-					fmt.Println("Error Creating file", value.Name, err)
-				}
-
-			}
-
-			fmt.Printf("Project %s created successfully", projectName)
-		}
-	} else {
-		fmt.Println("Available command right now: create <project-name>")
+	if command != "create" {
+		fmt.Println("Available command: create <project-name>")
+		return
 	}
+
+	if len(os.Args) < 3 {
+		fmt.Println("Please provide project name after create.")
+		return
+	}
+
+	projectName := os.Args[2]
+	cleanProjectName := filepath.Base(projectName)
+
+	if cleanProjectName != projectName {
+		fmt.Println(
+			"Invalid project name:",
+			projectName,
+			"using",
+			cleanProjectName,
+			"instead.",
+		)
+	}
+
+	if dirExists(cleanProjectName) {
+		fmt.Printf("The directory %s already exists\n", cleanProjectName)
+		os.Exit(1)
+	}
+
+	// Pass the cleaned project name to filecontent.go.
+	files := generateFiles(cleanProjectName)
+
+	for _, value := range dirs {
+		path := filepath.Join(cleanProjectName, value)
+
+		if err := os.MkdirAll(path, 0755); err != nil {
+			fmt.Fprintf(os.Stderr, "Error creating directory %s: %v\n", path, err)
+			os.Exit(1)
+		}
+	}
+
+	for _, value := range files {
+		filePath := filepath.Join(
+			cleanProjectName,
+			value.Folder,
+			value.Name,
+		)
+
+		if err := os.WriteFile(filePath, value.Data, 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "Error creating file %s: %v\n", value.Name, err)
+			os.Exit(1)
+		}
+	}
+
+	fmt.Printf("Project %s created successfully\n", cleanProjectName)
 }

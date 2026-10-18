@@ -1,20 +1,15 @@
+
 package main
 
-var dirs = []string{"cmd/server", "internal/config", "internal/handlers", "migrations"}
+type File struct {
+	Name   string
+	Folder string
+	Data   []byte
+}
 
-var files = []File{
-
-			{Name: "README.md",
-				Folder: "",
-				Data:   []byte(readmeContent),},
-			{
-				Name:   ".gitignore",
-				Folder: "",
-				Data:   []byte(gitignoreContent),
-			},
-			{
-				Name:   "go.mod",
-				Folder: "",
-				Data:   []byte(gomodContent),
-			},
-		}
+var dirs = []string{
+	"cmd/server",
+	"internal/config",
+	"internal/handlers",
+	"migrations",
+}
