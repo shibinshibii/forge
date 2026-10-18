@@ -59,7 +59,6 @@ my-api/
 ```sh
 git clone https://github.com/shibinshibii/forge.git
 cd forge
-go test ./...
 go run . create test-api
 go build -o forge .
 ```
