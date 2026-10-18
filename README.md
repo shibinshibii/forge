@@ -71,3 +71,5 @@ We welcome contributions of all kinds. To get started:
 1. Fork the repository and create a new branch.
 2. Make your changes, whether that's a bug fix, an improvement, or a new feature.
 3. Open a pull request describing what you changed and why.
+
+[![Go CI](https://github.com/shibinshibii/forge/actions/workflows/ci.yml/badge.svg)](https://github.com/shibinshibii/forge/actions/workflows/ci.yml)
