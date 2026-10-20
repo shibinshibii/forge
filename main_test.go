@@ -84,7 +84,7 @@ func TestCLI_InvalidCommand(t *testing.T) {
 	}
 
 	output := strings.TrimSpace(string(out))
-	expected := "Available command: create <project-name>"
+	expected := "Use 'create <project_name>' to create a new project or 'tree' to preview the project structure."
 	if output != expected {
 		t.Errorf("got %q, want %q", output, expected)
 	}
