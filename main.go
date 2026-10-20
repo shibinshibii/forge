@@ -26,58 +26,67 @@ func main() {
 
 	command := os.Args[1]
 
-	if command != "create" {
-		fmt.Println("Available command: create <project-name>")
-		return
-	}
+	switch command {
+	case "tree":
+		cleanProjectName := "your-project-name" // Default project name for tree preview
+		if len(os.Args) >= 3 {
+			cleanProjectName = filepath.Base(os.Args[2])
+		}
+		printTree(cleanProjectName)
 
-	if len(os.Args) < 3 {
-		fmt.Println("Please provide project name after create.")
-		return
-	}
+	case "create":
+		if len(os.Args) < 3 {
+			fmt.Println("Please provide project name after create.")
+			return
+		}
 
-	projectName := os.Args[2]
-	cleanProjectName := filepath.Base(projectName)
+		projectName := os.Args[2]
+		cleanProjectName := filepath.Base(projectName)
 
-	if cleanProjectName != projectName {
-		fmt.Println(
-			"Invalid project name:",
-			projectName,
-			"using",
-			cleanProjectName,
-			"instead.",
-		)
-	}
+		if cleanProjectName != projectName {
+			fmt.Println(
+				"Invalid project name:",
+				projectName,
+				"using",
+				cleanProjectName,
+				"instead.",
+			)
+		}
 
-	if dirExists(cleanProjectName) {
-		fmt.Printf("The directory %s already exists\n", cleanProjectName)
-		os.Exit(1)
-	}
-
-	// Pass the cleaned project name to filecontent.go.
-	files := generateFiles(cleanProjectName)
-
-	for _, value := range dirs {
-		path := filepath.Join(cleanProjectName, value)
-
-		if err := os.MkdirAll(path, 0755); err != nil {
-			fmt.Fprintf(os.Stderr, "Error creating directory %s: %v\n", path, err)
+		if dirExists(cleanProjectName) {
+			fmt.Printf("The directory %s already exists\n", cleanProjectName)
 			os.Exit(1)
 		}
-	}
 
-	for _, value := range files {
-		filePath := filepath.Join(
-			cleanProjectName,
-			value.Folder,
-			value.Name,
-		)
+		// Pass the cleaned project name to filecontent.go.
+		files := generateFiles(cleanProjectName)
 
-		if err := os.WriteFile(filePath, value.Data, 0644); err != nil {
-			fmt.Fprintf(os.Stderr, "Error creating file %s: %v\n", value.Name, err)
-			os.Exit(1)
+		for _, value := range dirs {
+			path := filepath.Join(cleanProjectName, value)
+
+			if err := os.MkdirAll(path, 0755); err != nil {
+				fmt.Fprintf(os.Stderr, "Error creating directory %s: %v\n", path, err)
+				os.Exit(1)
+			}
 		}
-	}
 
-	fmt.Printf("Project %s created successfully\n", cleanProjectName)
+		for _, value := range files {
+			filePath := filepath.Join(
+				cleanProjectName,
+				value.Folder,
+				value.Name,
+			)
+
+			if err := os.WriteFile(filePath, value.Data, 0644); err != nil {
+				fmt.Fprintf(os.Stderr, "Error creating file %s: %v\n", value.Name, err)
+				os.Exit(1)
+			}
+		}
+
+		fmt.Printf("Project %s created successfully\n", cleanProjectName)
+	case "help":
+		printHelp()
+	default:
+		fmt.Println("Use 'create <project_name>' to create a new project or 'tree' to preview the project structure.")
+	}
 }
