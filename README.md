@@ -26,6 +26,20 @@ Make sure Go's binary directory is on your `PATH` so the `forge` command can be 
 ## Usage
 
 ```sh
+forge <command> [arguments]
+```
+
+### Commands
+
+| Command | Description |
+| --- | --- |
+| `forge create <project_name>` | Create a new Go API project |
+| `forge tree [project_name]` | Preview the generated project structure |
+| `forge help` | Show help message and usage details |
+
+### Create a project
+
+```sh
 forge create my-api
 cd my-api
 go run ./cmd/server
@@ -41,17 +55,42 @@ curl http://localhost:8080/health
 
 Returns `{"status":"ok"}`.
 
-## Generated structure
+### Preview project structure
+
+Preview the directory structure without generating files on disk:
+
+```sh
+# Preview with default placeholder ("your-project-name")
+forge tree
+
+# Preview with a specific project name
+forge tree my-api
+```
+
+Output:
 
 ```text
 my-api/
-├── cmd/server/main.go
-├── internal/config/config.go
-├── internal/handlers/handler.go
+├── cmd/
+│   └── server/
+│       └── main.go
+├── internal/
+│   ├── config/
+│   │   └── config.go
+│   └── handlers/
+│       └── handler.go
 ├── migrations/
 ├── .gitignore
 ├── README.md
 └── go.mod
+```
+
+### Help
+
+Display CLI usage, available commands, and examples:
+
+```sh
+forge help
 ```
 
 ## Develop
@@ -61,6 +100,7 @@ git clone https://github.com/shibinshibii/forge.git
 cd forge
 go test ./...
 go run . create test-api
+go run . tree
 go build -o forge .
 ```
 
@@ -71,5 +111,3 @@ We welcome contributions of all kinds. To get started:
 1. Fork the repository and create a new branch.
 2. Make your changes, whether that's a bug fix, an improvement, or a new feature.
 3. Open a pull request describing what you changed and why.
-
-[![Go CI](https://github.com/shibinshibii/forge/actions/workflows/ci.yml/badge.svg)](https://github.com/shibinshibii/forge/actions/workflows/ci.yml)
