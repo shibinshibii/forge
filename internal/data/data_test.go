@@ -1,4 +1,4 @@
-package main
+package data
 
 import (
 	"slices"
@@ -14,27 +14,27 @@ func TestDirs(t *testing.T) {
 		"migrations",
 	}
 
-	if len(dirs) != len(expectedDirs) {
-		t.Fatalf("got %d dirs, want %d dirs", len(dirs), len(expectedDirs))
+	if len(Dirs) != len(expectedDirs) {
+		t.Fatalf("got %d Dirs, want %d Dirs", len(Dirs), len(expectedDirs))
 	}
 
 	for _, expected := range expectedDirs {
-		if !slices.Contains(dirs, expected) {
-			t.Errorf("expected directory %q not found in dirs list", expected)
+		if !slices.Contains(Dirs, expected) {
+			t.Errorf("expected directory %q not found in Dirs list", expected)
 		}
 	}
 
 	// Verify no empty paths, no leading slashes, and no duplicate paths
 	seen := make(map[string]bool)
-	for _, dir := range dirs {
+	for _, dir := range Dirs {
 		if strings.TrimSpace(dir) == "" {
-			t.Errorf("dirs contains an empty directory path")
+			t.Errorf("Dirs contains an empty directory path")
 		}
 		if strings.HasPrefix(dir, "/") || strings.HasPrefix(dir, "\\") {
 			t.Errorf("dir path %q should be relative, but has leading slash", dir)
 		}
 		if seen[dir] {
-			t.Errorf("duplicate directory path found in dirs: %q", dir)
+			t.Errorf("duplicate directory path found in Dirs: %q", dir)
 		}
 		seen[dir] = true
 	}

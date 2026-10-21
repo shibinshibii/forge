@@ -1,8 +1,8 @@
-package main
+package tree
 
 import "fmt"
 
-func printTree(projectName string) {
+func PrintTree(projectName string) {
 	fmt.Printf(`%s/
 ├── cmd/
 │   └── server/

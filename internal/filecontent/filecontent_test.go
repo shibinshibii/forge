@@ -1,6 +1,7 @@
-package main
+package filecontent
 
 import (
+	"github.com/shibinshibii/forge/internal/data"
 	"slices"
 	"strings"
 	"testing"
@@ -8,7 +9,7 @@ import (
 
 func TestGenerateFiles(t *testing.T) {
 	projectName := "test-project"
-	files := generateFiles(projectName)
+	files := GenerateFiles(projectName)
 
 	wantCount := 6
 	if len(files) != wantCount {
@@ -135,11 +136,11 @@ func TestGenerateFiles(t *testing.T) {
 }
 
 func TestGenerateFiles_FolderConsistency(t *testing.T) {
-	files := generateFiles("folder-test")
+	files := GenerateFiles("folder-test")
 	for _, file := range files {
 		if file.Folder != "" {
-			if !slices.Contains(dirs, file.Folder) {
-				t.Errorf("file %q placed in folder %q, which is not registered in dirs list (%v)", file.Name, file.Folder, dirs)
+			if !slices.Contains(data.Dirs, file.Folder) {
+				t.Errorf("file %q placed in folder %q, which is not registered in dirs list (%v)", file.Name, file.Folder, data.Dirs)
 			}
 		}
 	}
@@ -170,9 +171,9 @@ func TestGenerateFiles_ProjectNames(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			files := generateFiles(tc.projectName)
+			files := GenerateFiles(tc.projectName)
 
-			var readmeFile, gomodFile, mainFile *File
+			var readmeFile, gomodFile, mainFile *data.File
 			for i := range files {
 				switch files[i].Name {
 				case "README.md":

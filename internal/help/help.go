@@ -1,8 +1,8 @@
-package main
+package help
 
 import "fmt"
 
-func printHelp() {
+func PrintHelp() {
 	fmt.Printf(`Forge - A tiny Go project scaffolding CLI
 
 Generate a basic Go API project structure without a web framework.

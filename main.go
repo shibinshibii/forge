@@ -5,6 +5,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/shibinshibii/forge/internal/data"
+	"github.com/shibinshibii/forge/internal/filecontent"
+	"github.com/shibinshibii/forge/internal/help"
+	"github.com/shibinshibii/forge/internal/tree"
 )
 
 func dirExists(path string) bool {
@@ -32,7 +37,7 @@ func main() {
 		if len(os.Args) >= 3 {
 			cleanProjectName = filepath.Base(os.Args[2])
 		}
-		printTree(cleanProjectName)
+		tree.PrintTree(cleanProjectName)
 
 	case "create":
 		if len(os.Args) < 3 {
@@ -59,9 +64,9 @@ func main() {
 		}
 
 		// Pass the cleaned project name to filecontent.go.
-		files := generateFiles(cleanProjectName)
+		files := filecontent.GenerateFiles(cleanProjectName)
 
-		for _, value := range dirs {
+		for _, value := range data.Dirs {
 			path := filepath.Join(cleanProjectName, value)
 
 			if err := os.MkdirAll(path, 0755); err != nil {
@@ -85,7 +90,7 @@ func main() {
 
 		fmt.Printf("Project %s created successfully\n", cleanProjectName)
 	case "help":
-		printHelp()
+		help.PrintHelp()
 	default:
 		fmt.Println("Use 'create <project_name>' to create a new project or 'tree' to preview the project structure.")
 	}

@@ -1,4 +1,4 @@
-package main
+package tree
 
 import (
 	"bytes"
@@ -33,7 +33,7 @@ func TestPrintTree(t *testing.T) {
 	oldStdout := os.Stdout
 	os.Stdout = w
 
-	printTree(projectName)
+	PrintTree(projectName)
 
 	w.Close()
 	os.Stdout = oldStdout

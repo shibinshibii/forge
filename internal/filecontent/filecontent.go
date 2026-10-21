@@ -1,7 +1,8 @@
-package main
+package filecontent
 
 import (
 	"fmt"
+	"github.com/shibinshibii/forge/internal/data"
 	"strings"
 )
 
@@ -108,7 +109,7 @@ func Health(w http.ResponseWriter, r *http.Request) {
 }
 `
 
-func generateFiles(projectName string) []File {
+func GenerateFiles(projectName string) []data.File {
 	modulePath := fmt.Sprintf("example.com/%s", projectName)
 	mainContent := strings.ReplaceAll(
 		mainTemplate,
@@ -125,7 +126,7 @@ func generateFiles(projectName string) []File {
 		modulePath,
 	)
 
-	return []File{
+	return []data.File{
 		{
 			Name:   "README.md",
 			Folder: "",

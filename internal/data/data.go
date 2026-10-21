@@ -1,4 +1,4 @@
-package main
+package data
 
 type File struct {
 	Name   string
@@ -6,7 +6,7 @@ type File struct {
 	Data   []byte
 }
 
-var dirs = []string{
+var Dirs = []string{
 	"cmd/server",
 	"internal/config",
 	"internal/handlers",
